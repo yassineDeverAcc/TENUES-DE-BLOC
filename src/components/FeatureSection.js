@@ -6,13 +6,13 @@ const features = [
   {
     
     id: 1,
-    title: "Fièrement 100% Algérien",
+    title: "Fièrement 100% Algérien 1",
     description: "Nos tenues de bloc sont conçues et fabriquées en Algérie, avec un savoir-faire local qui met en valeur les talents de nos artisans et industriels. En choisissant nos produits, vous soutenez l’économie locale tout en bénéficiant d’une qualité irréprochable.",
     image: blousebleu,
   },
   {
     id: 2,
-    title: "Confort Absolu, Toute la Journée l",
+    title: "Confort Absolu, Toute la Journée",
     description: "Nous comprenons l’importance du confort dans votre métier. C’est pourquoi nos tenues sont confectionnées dans des matières respirantes, légères et douces au toucher, pour vous permettre de rester à l’aise, même pendant les journées les plus chargées.",
     image: blousebleu,
   },
