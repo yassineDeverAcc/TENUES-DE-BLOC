@@ -1,0 +1,49 @@
+/* Table Styling */
+.purchases-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling if necessary */
+  }
+  
+  .purchases-table th,
+  .purchases-table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .purchases-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .purchases-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .purchases-table select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+
+
+/* Responsive Design */
+   @media (max-width: 480px) {
+    .purchases-table th,
+    .purchases-table td {
+      font-size: 0.9rem; /* Slightly smaller font for small screens */
+      padding: 8px; /* Reduce padding */
+    }
+  
+    .purchases-table {
+      font-size: 0.85rem; /* Adjust table font size for readability */
+    }
+  
+    h1 {
+      font-size: 1.5rem; /* Reduce the size of the heading */
+    }
+  }

@@ -1,0 +1,45 @@
+/* Delivery Section */
+.delivery-section {
+    margin: 20px 0;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  .delivery-section h3 {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .delivery-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .dropdown {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .dropdown label {
+    margin-bottom: 5px;
+    font-size: 1rem;
+  }
+  
+  .dropdown select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: white;
+  }
+  
+  .dropdown select:focus {
+    border-color: #28a745;
+    outline: none;
+  }
