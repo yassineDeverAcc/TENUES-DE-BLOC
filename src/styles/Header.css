@@ -1,0 +1,52 @@
+.header {
+  background-color: transparent;
+  text-align: center;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centre tous les éléments initialement */
+  position: relative; /* Nécessaire pour positionner le panier */
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+
+.header-logo {
+  max-width: 150px; /* Taille maximale du logo */
+  height: auto;
+}
+
+.header-panier {
+  max-width: 40px;
+  height: auto;
+  position: absolute; /* Positionne le panier indépendamment */
+  right: 20px; /* À droite de l'écran */
+  cursor: pointer;
+}
+
+/* Media Queries pour écrans plus petits */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 10px; /* Réduit les marges internes */
+  }
+
+  
+
+  .header-panier {
+    max-width: 30px; /* Réduit la taille du panier */
+    right: 10px; /* Ajuste la position du panier */
+  }
+}
+
+@media (max-width: 480px) {
+  
+
+  .header-panier {
+    max-width: 25px; /* Taille encore réduite */
+    right: 8px; /* Ajuste la position */
+  }
+}
