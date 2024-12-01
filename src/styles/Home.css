@@ -1,0 +1,19 @@
+html, body, #root {
+    margin: 0;
+    padding: 0;
+    height: 100%; /* Définit la hauteur totale de l'écran */
+  }
+  
+  .App {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-container {
+    min-height: 100vh; /* Prend 100% de la hauteur visible */
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, #0b132b,  #fff); /* Gradient appliqué ici */
+    color: white;
+    height: 100%;
+  }

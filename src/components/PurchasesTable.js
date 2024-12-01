@@ -1,5 +1,5 @@
 import React from "react";
-import "./PurchasesTable.css";
+import "./../styles/PurchasesTable.css";
 
 const PurchasesTable = ({ purchases, onStateChange }) => {
   return (

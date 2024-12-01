@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./../css/Delivery.css" ;
+import "./../styles/Delivery.css" ;
 
 const DeliverySection = ({ onDeliveryChange }) => {
   const [destination, setDestination] = useState("");

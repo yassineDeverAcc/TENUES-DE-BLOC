@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./../styles/Products.css";
 import blousebleu from "../images/medicine-uniform-healthcare-medical-workers-day-space-text.jpg";
+import { CartContext } from "./CartContext";
 
 const feats = [
   {
@@ -35,25 +36,33 @@ const feats = [
   },
 ];
 
-const Products = ({ cart, setCart, disabledItems, setDisabledItems }) => {
-  // Fonction pour ajouter un produit au panier
+const Products = () => {
+  const { cart, setCart } = useContext(CartContext);
+
+  // Ajouter un produit au panier
   const handleAddToCart = (id) => {
     if (!cart.includes(id)) {
-      const newCart = [...cart, id];
-      const newDisabledItems = [...disabledItems, id];
-      
-      setCart([...cart, id]); // Ajoute le produit au panier
-      setDisabledItems([...disabledItems, id]); // Désactive le bouton en grisant
-
-      console.log("cart: ", newCart);
-      console.log("Disabled Items: ", newDisabledItems); 
+      setCart([...cart, id]);
     }
+  };
+
+  // Supprimer un produit du panier
+  const handleRemoveFromCart = (id) => {
+    setCart(cart.filter((productId) => productId !== id));
+  };
+
+  // Réinitialiser le panier
+  const handleResetCart = () => {
+    setCart([]); // Réinitialise le cart
   };
 
   return (
     <section className="sec">
       <div className="prodTitle">
         <h1>Nos produits</h1>
+        <button className="reset-cart-btn" onClick={handleResetCart}>
+          Réinitialiser le panier
+        </button>
       </div>
 
       <div className="product-grid-container">
@@ -66,11 +75,11 @@ const Products = ({ cart, setCart, disabledItems, setDisabledItems }) => {
               <h3>{feat.title}</h3>
               <p>{feat.description}</p>
               <button
-                className={`add-to-cart-btn ${disabledItems.includes(feat.id) ? 'disabled' : ''}`}
+                className={`add-to-cart-btn ${cart.includes(feat.id) ? 'disabled' : ''}`}
                 onClick={() => handleAddToCart(feat.id)}
-                disabled={disabledItems.includes(feat.id)} // Désactive le bouton si déjà ajouté
+                disabled={cart.includes(feat.id)} // Désactivé si déjà dans le panier
               >
-                {disabledItems.includes(feat.id) ? 'Ajouté au panier' : 'Ajouter au panier'}
+                {cart.includes(feat.id) ? "Ajouté au panier" : "Ajouter au panier"}
               </button>
             </div>
           </div>

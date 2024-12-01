@@ -1,17 +1,31 @@
-import React, { useState } from "react";
-import CarouselSection from "./components/js/CarouselSection";
-import ProductSection from "./components/js/ProductSection";
-import FormSection from "./components/js/FormSection";
-import DeliverySection from "./components/js/DeliverySection";
-import SummarySection from "./components/js/SummarySection";
+import React, { useContext, useState } from "react";
+import CarouselSection from "./../components/CarouselSection";
+import ProductSection from "./../components/ProductSection";
+import FormSection from "./../components/FormSection";
+import DeliverySection from "./../components/DeliverySection";
+import SummarySection from "./../components/SummarySection";
+import Header from "./../components/Header";
+import { CartContext } from "./../components/CartContext";
+import "./Panier.css";
 
 const PanierPage = () => {
-  const [quantity, setQuantity] = useState(0);
-  const [deliveryPrice, setDeliveryPrice] = useState(0);
-  const pricePerItem = 50; // Static price per item
+  const { cart, setCart } = useContext(CartContext);
+  const [quantities, setQuantities] = useState(() => {
+    const initialQuantities = {};
+    cart.forEach((id) => {
+      initialQuantities[id] = 1; // Quantité par défaut : 1
+    });
+    return initialQuantities;
+  });
 
-  const handleQuantityChange = (newQuantity) => {
-    setQuantity(isNaN(newQuantity) ? 0 : newQuantity);
+  const [deliveryPrice, setDeliveryPrice] = useState(0);
+  const pricePerItem = 50;
+
+  const handleQuantityChange = (id, newQuantity) => {
+    setQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [id]: newQuantity,
+    }));
   };
 
   const handleDeliveryChange = (destination, deliveryType) => {
@@ -28,24 +42,44 @@ const PanierPage = () => {
     setDeliveryPrice(price);
   };
 
+  const handleRemoveFromCart = (id) => {
+    setCart(cart.filter((productId) => productId !== id));
+  };
+
   return (
-    <div>
-      <div className="navbar">Panier</div>
-      <CarouselSection
-        quantity={quantity}
-        onQuantityChange={handleQuantityChange}
-      />
-      {Array.from({ length: quantity }, (_, index) => (
-        <ProductSection key={index} index={index} />
-      ))}
+    <body>
+      <Header />
+
+      <div className="cart-container">
+        {cart.map((id) => (
+          <div key={id} className="cart-item">
+            {/* Section Carousel */}
+            <CarouselSection
+              id={id}
+              quantity={quantities[id]}
+              onQuantityChange={(newQuantity) => handleQuantityChange(id, newQuantity)}
+              onRemoveFromCart={handleRemoveFromCart} // Pass function here
+            />
+
+            {/* Sections Product associées */}
+            <div className="product-section-list">
+              {Array.from({ length: quantities[id] || 0 }, (_, index) => (
+                <ProductSection key={`${id}-${index}`} index={index} id={id} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
       <DeliverySection onDeliveryChange={handleDeliveryChange} />
       <SummarySection
-        quantity={quantity}
+        cart={cart}
+        quantities={quantities}
         pricePerItem={pricePerItem}
         deliveryPrice={deliveryPrice}
       />
       <FormSection />
-    </div>
+    </body>
   );
 };
 

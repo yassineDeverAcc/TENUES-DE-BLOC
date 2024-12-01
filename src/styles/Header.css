@@ -8,11 +8,13 @@
 
 .header-container {
   display: flex;
-  align-items: center;
-  justify-content: center; /* Centre tous les éléments initialement */
-  position: relative; /* Nécessaire pour positionner le panier */
+  align-items: center; /* Aligne verticalement les éléments à la même hauteur */
+  justify-content: center; /* Centre le logo horizontalement */
+  position: relative; /* Nécessaire pour positionner le panier à droite */
   padding: 10px 20px;
   box-sizing: border-box;
+  height: 100%;
+  width: 100%; /* Assure que la largeur est 100% */
 }
 
 .header-logo {
@@ -23,30 +25,28 @@
 .header-panier {
   max-width: 40px;
   height: auto;
-  position: absolute; /* Positionne le panier indépendamment */
-  right: 20px; /* À droite de l'écran */
+  position: absolute; /* Position absolue pour placer le panier à droite */
+  right: 20px; /* Le panier se trouve à 20px du bord droit */
   cursor: pointer;
+  top: 50%; /* Positionne l'icône du panier à 50% de la hauteur de son conteneur */
+  transform: translateY(-50%); /* Décale l'icône pour la centrer verticalement */
 }
 
 /* Media Queries pour écrans plus petits */
 @media (max-width: 768px) {
   .header-container {
-    padding: 10px; /* Réduit les marges internes */
+    padding: 10px;
   }
 
-  
-
   .header-panier {
-    max-width: 30px; /* Réduit la taille du panier */
-    right: 10px; /* Ajuste la position du panier */
+    max-width: 30px;
+    right: 10px; /* Ajuste la position du panier sur les petits écrans */
   }
 }
 
 @media (max-width: 480px) {
-  
-
   .header-panier {
-    max-width: 25px; /* Taille encore réduite */
-    right: 8px; /* Ajuste la position */
+    max-width: 25px;
+    right: 8px; /* Ajuste encore la position sur les très petits écrans */
   }
 }

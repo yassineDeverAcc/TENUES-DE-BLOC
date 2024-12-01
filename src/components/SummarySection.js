@@ -1,5 +1,5 @@
 import React from "react";
-import "./../css/Summary.css" ;
+import "./../styles/Summary.css" ;
 
 const SummarySection = ({ quantity, pricePerItem, deliveryPrice }) => {
   const totalItemPrice = quantity * pricePerItem;

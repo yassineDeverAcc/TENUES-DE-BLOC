@@ -1,5 +1,5 @@
 import React from "react";
-import "./FilterSearch.css";
+import "./../styles/FilterSearch.css";
 
 const FilterSearchSection = ({
   filterState,
