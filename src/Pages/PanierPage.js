@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import CarouselSection from "./../components/CarouselSection";
 import ProductSection from "./../components/ProductSection";
 import FormSection from "./../components/FormSection";
@@ -6,6 +6,7 @@ import DeliverySection from "./../components/DeliverySection";
 import SummarySection from "./../components/SummarySection";
 import Header from "./../components/Header";
 import { CartContext } from "./../components/CartContext";
+import livraison from "./../ressources/livraison_wilaya.txt";
 import "./Panier.css";
 
 const PanierPage = () => {
@@ -18,67 +19,109 @@ const PanierPage = () => {
     return initialQuantities;
   });
 
-  const [deliveryPrice, setDeliveryPrice] = useState(0);
+  const [deliveryPrice, setDeliveryPrice] = useState(null); // Initialisation à null
+  const [selectedWilaya, setSelectedWilaya] = useState(""); // Ajout pour les wilayas
+  const [deliveryType, setDeliveryType] = useState(""); // Type initialisé à une chaîne vide
+  const [wilayaData, setWilayaData] = useState({}); // Stocke les données des wilayas
   const pricePerItem = 50;
+
+  const parseWilayaData = (fileContent) => {
+    const lines = fileContent.trim().split("\n");
+    const data = {};
+
+    lines.forEach((line) => {
+      const match = line.match(/\((\d+),(\d+),(\d+)\)/);
+      if (match) {
+        const [, id, bureauPrice, domicilePrice] = match;
+        data[id] = {
+          bureauPrice: parseInt(bureauPrice, 10),
+          domicilePrice: parseInt(domicilePrice, 10),
+        };
+      }
+    });
+
+    setWilayaData(data);
+  };
+
+  useEffect(() => {
+    fetch(livraison)
+      .then((response) => response.text())
+      .then((text) => parseWilayaData(text));
+  }, []);
 
   const handleQuantityChange = (id, newQuantity) => {
     setQuantities((prevQuantities) => ({
       ...prevQuantities,
-      [id]: newQuantity,
+      [id]: Math.max(0, newQuantity),
     }));
-  };
-
-  const handleDeliveryChange = (destination, deliveryType) => {
-    let price = 0;
-    if (destination === "usa") {
-      price = deliveryType === "express" ? 20 : deliveryType === "overnight" ? 30 : 10;
-    } else if (destination === "europe") {
-      price = deliveryType === "express" ? 25 : deliveryType === "overnight" ? 40 : 15;
-    } else if (destination === "asia") {
-      price = deliveryType === "express" ? 30 : deliveryType === "overnight" ? 50 : 20;
-    } else if (destination === "canada") {
-      price = deliveryType === "express" ? 18 : deliveryType === "overnight" ? 25 : 8;
-    }
-    setDeliveryPrice(price);
   };
 
   const handleRemoveFromCart = (id) => {
     setCart(cart.filter((productId) => productId !== id));
   };
 
+  const handleDeliveryChange = (wilaya, type) => {
+    setSelectedWilaya(wilaya);
+    setDeliveryType(type);
+    let price = null;
+
+    if (wilayaData[wilaya] && type) {
+      const { bureauPrice, domicilePrice } = wilayaData[wilaya];
+      price = type === "bureau" ? bureauPrice : domicilePrice;
+    }
+
+    setDeliveryPrice(price); // Met à jour les frais de livraison
+  };
+
   return (
     <body>
       <Header />
+    <div>
+      
+      <div>
+        <div className="cart-container">
+          {cart.length === 0 ? (
+            <p className="empty-cart">Votre panier est vide.</p>
+          ) : (
+            cart.map((id) => (
+              <div key={id} className="cart-item">
+                <CarouselSection
+                  id={id}
+                  quantity={quantities[id]}
+                  onQuantityChange={(newQuantity) =>
+                    handleQuantityChange(id, newQuantity)
+                  }
+                  onRemoveFromCart={handleRemoveFromCart}
+                />
+                <div className="product-section-list">
+                  {Array.from({ length: quantities[id] || 0 }, (_, index) => (
+                    <ProductSection key={`${id}-${index}`} index={index} id={id} />
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
 
-      <div className="cart-container">
-        {cart.map((id) => (
-          <div key={id} className="cart-item">
-            {/* Section Carousel */}
-            <CarouselSection
-              id={id}
-              quantity={quantities[id]}
-              onQuantityChange={(newQuantity) => handleQuantityChange(id, newQuantity)}
-              onRemoveFromCart={handleRemoveFromCart} // Pass function here
-            />
+        <DeliverySection
+          selectedWilaya={selectedWilaya}
+          deliveryType={deliveryType}
+          onDeliveryChange={handleDeliveryChange}
+          wilayaData={wilayaData}
+        />
 
-            {/* Sections Product associées */}
-            <div className="product-section-list">
-              {Array.from({ length: quantities[id] || 0 }, (_, index) => (
-                <ProductSection key={`${id}-${index}`} index={index} id={id} />
-              ))}
-            </div>
-          </div>
-        ))}
+        <SummarySection
+          cart={cart}
+          quantities={quantities}
+          pricePerItem={pricePerItem}
+          selectedWilaya={selectedWilaya}
+          deliveryType={deliveryType}
+          deliveryPrice={deliveryPrice || 0} // Assurer qu'il y a une valeur numérique même si null
+        />
+
+        <FormSection />
       </div>
-
-      <DeliverySection onDeliveryChange={handleDeliveryChange} />
-      <SummarySection
-        cart={cart}
-        quantities={quantities}
-        pricePerItem={pricePerItem}
-        deliveryPrice={deliveryPrice}
-      />
-      <FormSection />
+    </div>
     </body>
   );
 };

@@ -5,31 +5,31 @@ import { CartContext } from "./CartContext";
 
 const feats = [
   {
-    id: 1,
+    id: "rouge",
     title: "Fièrement 100% Algérien",
     description: "Nos tenues de bloc sont conçues et fabriquées en Algérie",
     image: blousebleu,
   },
   {
-    id: 2,
+    id: "bleu",
     title: "Confort Absolu, Toute la Journée",
     description: "Nous comprenons l’importance du confort dans votre métier.",
     image: blousebleu,
   },
   {
-    id: 3,
+    id: "noir",
     title: "Hygiène et Sécurité Optimales",
     description: "Parce que votre sécurité et celle de vos patients sont primordiales",
     image: blousebleu,
   },
   {
-    id: 4,
+    id: "noir",
     title: "Style Professionnel Élégant",
     description: "Qui a dit que les tenues de bloc ne pouvaient pas être stylées",
     image: blousebleu,
   },
   {
-    id: 5,
+    id: "blanc",
     title: "Durabilité Qui Fait la Différence",
     description: "Nos tenues de bloc sont conçues pour durer.",
     image: blousebleu,
