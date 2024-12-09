@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import "./Dashboard.css";
-import FilterSearchSection from "./FilterSearchSection";
-import PurchasesTable from "./PurchasesTable";
+import "./../styles/Dashboard.css";
+import PurchasesTable from "./../components/PurchasesTable";
 
 const DashboardPage = () => {
   const [purchases, setPurchases] = useState([
@@ -11,11 +10,10 @@ const DashboardPage = () => {
     { id: 4, name: "Bob Brown", price: 50, state: "deliveré" },
   ]);
 
-  const [filterState, setFilterState] = useState("tout");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [filterState] = useState("tout");
+  const [searchQuery] = useState("");
 
-  const handleFilterChange = (state) => setFilterState(state);
-  const handleSearchChange = (query) => setSearchQuery(query);
+  
 
   const handleStateChange = (id, newState) => {
     setPurchases((prevPurchases) =>
@@ -36,19 +34,15 @@ const DashboardPage = () => {
   });
 
   return (
+    <body>
     <div className="dashboard-page">
       <h1>Liste de Commandes</h1>
-      <FilterSearchSection
-        filterState={filterState}
-        onFilterChange={handleFilterChange}
-        searchQuery={searchQuery}
-        onSearchChange={handleSearchChange}
-      />
       <PurchasesTable
         purchases={filteredPurchases}
         onStateChange={handleStateChange}
       />
     </div>
+    </body>
   );
 };
 

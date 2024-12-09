@@ -2,6 +2,9 @@
 .dashboard-page {
     padding: 20px;
     font-family: Arial, sans-serif;
+    height: 100vh;
+    background-color: #c3c1c1;
+    color: black;
   }
   
   h1 {

@@ -9,7 +9,9 @@
 }
 
 .hero-content {
-  flex: 1; /* Permet au texte de prendre un espace proportionnel */
+  display: flex;
+  flex-direction: column; /* Organise les éléments verticalement */
+  justify-content: center; /* Centre le contenu verticalement */
   text-align: left; /* Aligne le texte à gauche */
   color: #fff;
   margin-top: 10%; /* Décale le texte vers le haut (ajustez la valeur si nécessaire) */
@@ -20,14 +22,13 @@
 .hero-title {
   font-size: 3rem; /* Taille du titre */
   margin-bottom: 10px; /* Réduit l'espace sous le titre */
-  margin-left: 10%;
+  width: 100%;
 }
 
 .hero-text {
   font-size: 1.4rem; /* Taille du texte */
   margin-bottom: 20px; /* Réduit l'espace sous le texte */
-  margin-left: 10%;
-
+  width: 100%;
 }
 
 .hero-button {
@@ -38,8 +39,8 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  margin-left: 10%;
-
+  align-self: center; /* Centre le bouton horizontalement */
+  margin-top: 20px; /* Ajoute de l'espace au-dessus du bouton */
 }
 
 .hero-button:hover {
@@ -52,8 +53,6 @@
   justify-content: center; /* Centre l'image horizontalement */
   align-items: center; /* Centre l'image verticalement */
   height: 100vh;
-
-  
 }
 
 .hero-image img {
@@ -61,6 +60,9 @@
   height: 100%; /* La hauteur de l'image est réduite à 50% de la hauteur de son conteneur */
   object-fit: contain; /* Maintient les proportions de l'image */
 }
+
+
+
 @media (max-width: 768px) {
   .hero-section {
     flex-direction: column; /* Place le texte et l'image l'un sous l'autre */
@@ -69,19 +71,16 @@
 
   .hero-content {
     padding-right: 0; /* Retire l'espace inutilisé sur mobile */
+    text-align: center; /* Centrer le texte */
+    margin-top: 10; /* Réduit la marge en haut sur mobile */
+    margin-left: 0;
   }
 
   .hero-image img {
     max-width: 100%; /* L'image occupe toute la largeur disponible */
   }
-  .hero-button{
-    display: flex;
-    margin-left: 30%;
-  }
-  .hero-text{
-    margin-left: 0;
-  }
-  .hero-title{
-    margin-left: 0;
+
+  .hero-button {
+    align-self: center; /* Centrer le bouton sur mobile */
   }
 }
