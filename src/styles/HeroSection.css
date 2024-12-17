@@ -6,6 +6,7 @@
   padding: 20px; /* Ajoute un peu d'espace autour */
   gap: 20px; /* Ajoute un espace modéré entre le texte et l'image */
   padding-bottom: 0;
+  text-align: left;
 }
 
 .hero-content {
@@ -28,7 +29,7 @@
 .hero-text {
   font-size: 1.4rem; /* Taille du texte */
   margin-bottom: 20px; /* Réduit l'espace sous le texte */
-  width: 100%;
+  margin-left: 0;
 }
 
 .hero-button {

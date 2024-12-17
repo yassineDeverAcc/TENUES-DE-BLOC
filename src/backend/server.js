@@ -70,6 +70,139 @@ app.put("/api/update/:id", (req, res) => {
       res.json({ success: true });
     });
   });
+
+  app.get("/api/order-details/:id", (req, res) => {
+    const { id } = req.params;
+  
+    const queryCommande = "SELECT * FROM commande WHERE id = ?";
+    const queryDetails = "SELECT * FROM details_commande WHERE id_commande = ?";
+  
+    db.query(queryCommande, [id], (err, commandeResults) => {
+      if (err) return res.status(500).json({ error: "Erreur serveur" });
+  
+      db.query(queryDetails, [id], (err, detailsResults) => {
+        const total = detailsResults.reduce((acc, item) => acc + item.prix, 0) + commandeResults[0].frais;
+        res.json({ commande: commandeResults[0], details: detailsResults, total });
+      });
+    });
+  });
+  app.put("/api/update-details", (req, res) => {
+    const updates = req.body;
+  
+    updates.forEach((item) => {
+      db.query(
+        "UPDATE details_commande SET model = ?, prix = ?, taille = ? WHERE idd = ?",
+        [item.model, item.prix, item.taille, item.idd],
+        (err) => {
+          if (err) console.error("Erreur de mise à jour :", err);
+        }
+      );
+    });
+    res.json({ success: true });
+  });
+
+  app.delete("/api/delete-detail/:idd", (req, res) => {
+    const { idd } = req.params;
+  
+    db.query("DELETE FROM details_commande WHERE idd = ?", [idd], (err) => {
+      if (err) return res.status(500).json({ error: "Erreur de suppression" });
+      res.json({ success: true });
+    });
+  });
+  app.put("/api/update-order/:id", (req, res) => {
+    const { id } = req.params;
+    const { wilaya, commune, type_livraison, frais, nom, prenom, adresse, num, etat, tracking } = req.body;
+  
+    const query = `
+      UPDATE commande 
+      SET 
+        wilaya = ?, 
+        commune = ?, 
+        type_livraison = ?, 
+        frais = ?, 
+        nom = ?, 
+        prenom = ?, 
+        adresse = ?, 
+        num = ?, 
+        etat = ?,
+        tracking = ? 
+      WHERE id = ?
+    `;
+  
+    db.query(query, [wilaya, commune, type_livraison, frais, nom, prenom, adresse, num, etat, tracking, id], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de la mise à jour de la commande :", err);
+        return res.status(500).json({ success: false, error: "Erreur serveur" });
+      }
+      res.json({ success: true });
+    });
+  });
+  app.delete("/api/delete-order/:id", (req, res) => {
+    const { id } = req.params;
+  
+    // Suppression des détails liés à la commande
+    const deleteDetailsQuery = "DELETE FROM details_commande WHERE id_commande = ?";
+    const deleteOrderQuery = "DELETE FROM commande WHERE id = ?";
+  
+    db.query(deleteDetailsQuery, [id], (err) => {
+      if (err) {
+        console.error("Erreur lors de la suppression des détails :", err);
+        return res.status(500).json({ success: false, error: "Erreur serveur" });
+      }
+      db.query(deleteOrderQuery, [id], (err) => {
+        if (err) {
+          console.error("Erreur lors de la suppression de la commande :", err);
+          return res.status(500).json({ success: false, error: "Erreur serveur" });
+        }
+        res.json({ success: true });
+      });
+    });
+  });
+  app.put("/api/update-order/:id", (req, res) => {
+    const { id } = req.params;
+    const updatedFields = req.body;
+  
+    const query = "UPDATE commande SET ? WHERE id = ?";
+    db.query(query, [updatedFields, id], (err) => {
+      if (err) return res.status(500).json({ error: "Erreur mise à jour" });
+      res.json({ success: true });
+    });
+  });
+
+  app.delete("/api/delete-order/:id", (req, res) => {
+    const { id } = req.params;
+  
+    // Supprimer les détails de la commande
+    db.query("DELETE FROM details_commande WHERE id_commande = ?", [id], (err) => {
+      if (err) return res.status(500).json({ error: "Erreur suppression détails" });
+  
+      // Ensuite, supprimer la commande principale
+      db.query("DELETE FROM commande WHERE id = ?", [id], (err) => {
+        if (err) return res.status(500).json({ error: "Erreur suppression commande" });
+        res.json({ success: true });
+      });
+    });
+  });
+
+  // Ajouter un article à la commande
+// Route pour ajouter un article dans la table details_commande
+app.post("/api/add-article", (req, res) => {
+    const { orderId, model, prix, taille } = req.body;
+  
+    if (!orderId || !model || !prix || !taille) {
+      return res.status(400).json({ success: false, error: "Tous les champs sont nécessaires" });
+    }
+  
+    const query = "INSERT INTO details_commande (id_commande, model, prix, taille) VALUES (?, ?, ?, ?)";
+  
+    db.query(query, [orderId, model, prix, taille], (err, result) => {
+      if (err) {
+        console.error("Erreur lors de l'ajout de l'article :", err);
+        return res.status(500).json({ success: false, error: "Erreur serveur" });
+      }
+      res.json({ success: true, message: "Article ajouté avec succès" });
+    });
+  });
 // Lancer le serveur
 const PORT = 5001;
 app.listen(PORT, () => {
